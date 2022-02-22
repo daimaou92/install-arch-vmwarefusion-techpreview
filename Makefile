@@ -40,6 +40,7 @@ vm/install:
 		pacstrap /mnt neovim zsh git wget curl sudo openssh; \
 		pacstrap /mnt networkmanager; \
 		genfstab -U /mnt >> /mnt/etc/fstab; \
+		cp /tmp/before/mirrors/$(MIRRORLIST) /mnt/etc/pacman.d/mirrorlist; \
 		arch-chroot /mnt sh -c 'ln -sf /usr/share/zoneinfo/$(ARCHREGION)/$(ARCHCITY) /etc/localtime'; \
 		arch-chroot /mnt sh -c 'hwclock --systohc'; \
 		arch-chroot /mnt sh -c 'sed -e \"/en_US.UTF-8/s/^#*//g\" -i /etc/locale.gen'; \
