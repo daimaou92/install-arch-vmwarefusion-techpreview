@@ -5,6 +5,9 @@ ARCHHOSTNAME ?= archmachine
 ARCHREGION ?= Asia
 ARCHCITY ?= Kolkata
 
+SWAPSZG ?= 8
+ESPSZM ?= 512
+
 # typically sda for SATA
 ABLOCKDEVICE ?= nvme0n1
 
@@ -24,9 +27,9 @@ vm/install:
 	ssh $(SSHOPTIONS) -p$(APORT) -t root@$(ADDR) " \
 		timedatectl set-ntp true; \
 		parted /dev/$(ABLOCKDEVICE) -- mklabel gpt; \
-		parted /dev/$(ABLOCKDEVICE) -- mkpart primary 512MiB -8GiB; \
-		parted /dev/$(ABLOCKDEVICE) -- mkpart primary linux-swap -8GiB 100\%; \
-		parted /dev/$(ABLOCKDEVICE) -- mkpart ESP fat32 1MiB 512MiB; \
+		parted /dev/$(ABLOCKDEVICE) -- mkpart primary $(ESPSZM)MiB -$(SWAPSZG)GiB; \
+		parted /dev/$(ABLOCKDEVICE) -- mkpart primary linux-swap -$(SWAPSZG)GiB 100\%; \
+		parted /dev/$(ABLOCKDEVICE) -- mkpart ESP fat32 1MiB $(ESPSZM)MiB; \
 		parted /dev/$(ABLOCKDEVICE) -- set 3 esp on; \
 		mkfs.ext4 -L arch /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)1; \
 		mkswap -L swap /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)2; \
