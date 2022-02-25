@@ -28,8 +28,10 @@ P="$HOME/.kernbuild"
 [ -d "$P" ] && sudo rm -rf "$P"
 mkdir -p "$P" && cd "$P"
 
-wget --no-dns-cache --no-check-certificate --debug "https://cdn.kernel.org/pub/linux/kernel/${VP}/linux-${VER}.tar.xz"
-wget --no-dns-cache --no-check-certificate --debug "https://cdn.kernel.org/pub/linux/kernel/${VP}/linux-${VER}.tar.sign"
+wget --no-dns-cache --no-check-certificate --debug \
+	"https://cdn.kernel.org/pub/linux/kernel/${VP}/linux-${VER}.tar.xz"
+wget --no-dns-cache --no-check-certificate --debug \
+	"https://cdn.kernel.org/pub/linux/kernel/${VP}/linux-${VER}.tar.sign"
 
 FP=`gpg --list-packets linux-${VER}.tar.sign | grep keyid | awk '{print $6}'`
 gpg --recv-keys $FP
