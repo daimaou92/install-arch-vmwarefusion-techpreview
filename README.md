@@ -233,4 +233,10 @@ Done. Enjoy
 
 ### NB:
 
+If you inspect the `Makefile` there is an option `vm/home`. I use it personally
+to compile the kernel, build open-vm-tools, pull my dotfiles repo and setup
+a home environment all in a single step. I would strongly advice to have a look
+at my dotfiles repo (linked below) before running this - if you choose to do
+so that is.
+
 My minimal dotfiles are available [here](https://github.com/daimaou92/dotfiles).
