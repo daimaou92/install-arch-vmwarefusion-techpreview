@@ -71,7 +71,7 @@ vm/vmwgfx:
 		$(ARCHUSER)@$(ADDR):/tmp/
 	ssh $(SSHOPTIONS) -p$(APORT) -t $(ARCHUSER)@$(ADDR) " \
 		/bin/bash /tmp/kernelvmwgfx/build.sh; \
-		reboot; \
+		sudo reboot; \
 	"
 
 vm/openvmtools:
@@ -80,7 +80,7 @@ vm/openvmtools:
 		$(ARCHUSER)@$(ADDR):/tmp/
 	ssh $(SSHOPTIONS) -p$(APORT) -t $(ARCHUSER)@$(ADDR) " \
 		/bin/bash /tmp/openvmtools/build.sh; \
-		reboot; \
+		sudo reboot; \
 	"
 
 # This will

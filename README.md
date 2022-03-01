@@ -1,6 +1,6 @@
 # What it is
 
-An automated way of setting up ArchLinux in [VMware Fusion Public Tech Preview 21H1](https://customerconnect.vmware.com/downloads/get-download?downloadGroup=FUS-PUBTP-2021H1)
+A semi-automated way of setting up ArchLinux in [VMware Fusion Public Tech Preview 21H1](https://customerconnect.vmware.com/downloads/get-download?downloadGroup=FUS-PUBTP-2021H1)
 
 # Steps
 
@@ -56,6 +56,7 @@ to the above command.
 
 9. This will install Archlinux and create provided user with password = `root`.
    The VM will be restarted and you should be able to login with your user.
+   The default shell for the user will be set to `zsh`.
    I typically take a **VM Snapshot** at this stage.
 
 10. The linux kernel included, as of now, is not built with support for
@@ -81,11 +82,10 @@ is no guarantee if this script will be able to build the kernel.**
 13. Your system should again be restarted and you should see systemd
     boot default to the new kernel image.
 
-14. Install xrandr and run it to check if you have all the resolutions
-    at this point.
-
-15. You'll also need open-vm-tools for copy-paste and sharing to work across
-    VM and host. In your **Mac Host** terminal run:
+14. You'll also need open-vm-tools for clipboard (copy-paste) functionality
+    and sharing to work across VM and host.
+    At the time of writing this `open-vm-tools` exists for target
+    x86_64 only in Arch packages. In your **Mac Host** terminal run:
 
 ```Bash
 ADDR="<ip address from step 11>" \
@@ -93,7 +93,144 @@ ARCHUSER="preferred username (default:daimaou92)" \
 make vm/openvmtools
 ```
 
-This will pull the latest sources, compile and set it up. It'll reboot
-one last time and you're done.
+This will pull the latest sources from
+[https://github.com/vmware/open-vm-tools](https://github.com/vmware/open-vm-tools),
+compile and set it up. It'll reboot
+one more time.
 
-16. Enjoy
+15. After logging in verify the service status of the following:
+
+```Bash
+sudo systemctl status vmtoolsd.service
+sudo systemctl status vmware-vmblock-fuse.service
+```
+
+There should be no errors.
+
+Check if the file `/etc/xdg/autostart/vmware-user.desktop` exists:
+
+```Bash
+ls /etc/xdg/autostart/vmware-user.desktop
+```
+
+This will autostarted and is required for clipboard functionality.
+
+16. If everything has gone as per documentation so far - you can stop here and
+    set up your home environment the way you prefer.
+    Here's a quick setup with i3, kitty and xorg:
+
+```Bash
+sudo pacman -Sy xorg xorg-xinit i3-gaps i3status i3lock dmenu dex \
+	kitty dex
+```
+
+You'll need to mount the shared directories at this point. I typically
+create `$HOME/shares` and set the mounting cmd in my .zprofile
+(since i use zsh):
+
+```Bash
+mkdir -p $HOME/shares
+echo 'vmhgfs-fuse .host:/ "$HOME/shares" -o subtype=vmhgfs-fuse,allow_other' | \
+tee -a ~/.zprofile > /dev/null
+```
+
+Use `~/.profile` instead of `~/.zprofile` for bash.
+
+You'll need to start the x server at login followed by i3.
+We'll do it with a `~/.xinitrc` and `~/.zprofile`. Again replace with
+`~/.profile` for bash
+
+```Bash
+echo 'exec i3' | tee ~/.xinitrc > /dev/null
+echo 'startx' | tee -a ~/.zprofile > /dev/null
+```
+
+And reboot
+
+```Bash
+sudo reboot
+```
+
+17. On logging in for the first time you'll be asked if the `~/.config/i3/config`
+    file should be created. Press `Enter`. Another screen pops up asking your choice
+    of modifier key (called `$mod` henceforth).
+    Choose `cmd` or `alt` per preference using arrow keys and hit `Enter`.
+
+    Hit `$mod+Enter`. This should open up `kitty`.
+
+```Bash
+xrandr
+```
+
+You should see text like this:
+
+```Bash
+   1024x768      60.00*+  60.00
+   3840x2400     59.97
+   3840x2160     59.97
+   2880x1800     59.95
+   2560x1600     59.99
+   2560x1440     59.95
+   1920x1440     60.00
+   1856x1392     60.00
+   1792x1344     60.00
+   1920x1200     59.88
+   1920x1080     59.96
+   1600x1200     60.00
+   1680x1050     59.95
+   1400x1050     59.98
+   1280x1024     60.02
+   1440x900      59.89
+   1280x960      60.00
+   1360x768      60.02
+   1280x800      59.81
+   1152x864      75.00
+   1280x768      59.87
+   1280x720      59.86
+   800x600       60.32
+   640x480       59.94
+```
+
+Pick a resolution of choice and set it using xrandr. I'd advice against using
+more than 2560x1600 since 3D acceleration is missing in
+VMware Tech preview so far:
+
+```Bash
+xrandr -s 2560x1600
+```
+
+Set this in i3 to have correct resolution post log in:
+
+```Bash
+echo "exec --no-startup-id xrandr -s 2560x1600" >> ~/.config/i3/config
+```
+
+There's also DPI - specially if you're on a smaller screen. I set mine
+using `~/.Xresources`
+
+```Bash
+echo "Xft.dpi: 170" >> ~/.Xresources
+sed -i \
+	's@exec i3.*@xrdb -merge ~/.Xresources\
+exec i3@' ~/.xinitrc
+```
+
+18. Change the user password:
+
+```Bash
+passwd
+```
+
+and the root password:
+
+```Bash
+sudo passwd
+```
+
+19. Reboot
+
+```Bash
+sudo reboot
+```
+
+19. Done. Enjoy
