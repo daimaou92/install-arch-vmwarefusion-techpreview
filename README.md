@@ -113,11 +113,24 @@ Check if the file `/etc/xdg/autostart/vmware-user.desktop` exists:
 ls /etc/xdg/autostart/vmware-user.desktop
 ```
 
-This will autostarted and is required for clipboard functionality.
+This needs to be autostarted and is required for clipboard functionality.
 
-16. If everything has gone as per documentation so far - you can stop here and
-    set up your home environment the way you prefer.
-    Here's a quick setup with i3, kitty and xorg:
+16. Change the user password:
+
+```Bash
+passwd
+```
+
+and the root password:
+
+```Bash
+sudo passwd
+```
+
+17. If everything has gone as per documentation so far - you can stop reading
+    further and set up your home environment the way you prefer.
+
+### Quick setup with i3, kitty and xorg (optional):
 
 ```Bash
 sudo pacman -Sy xorg xorg-xinit i3-gaps i3status i3lock dmenu dex \
@@ -125,7 +138,7 @@ sudo pacman -Sy xorg xorg-xinit i3-gaps i3status i3lock dmenu dex \
 ```
 
 You'll need to mount the shared directories at this point. I typically
-create `$HOME/shares` and set the mounting cmd in my .zprofile
+create `$HOME/shares` and set the mounting command in my `.zprofile`
 (since i use zsh):
 
 ```Bash
@@ -151,18 +164,19 @@ And reboot
 sudo reboot
 ```
 
-17. On logging in for the first time you'll be asked if the `~/.config/i3/config`
-    file should be created. Press `Enter`. Another screen pops up asking your choice
-    of modifier key (called `$mod` henceforth).
-    Choose `cmd` or `alt` per preference using arrow keys and hit `Enter`.
+On logging in for the first time after installing i3 you'll be asked if the
+`~/.config/i3/config` file should be created. Press `Enter` for `Yes`.
+Another screen pops up asking your choice of modifier key
+(called `$mod` henceforth). Choose `cmd` or `alt` per preference using
+arrow keys and hit `Enter`.
 
-    Hit `$mod+Enter`. This should open up `kitty`.
+Hit `$mod+Enter`. This should open up `kitty`.
 
 ```Bash
 xrandr
 ```
 
-You should see text like this:
+You should see some text like this:
 
 ```Bash
    1024x768      60.00*+  60.00
@@ -215,22 +229,8 @@ sed -i \
 exec i3@' ~/.xinitrc
 ```
 
-18. Change the user password:
+Done. Enjoy
 
-```Bash
-passwd
-```
+### NB:
 
-and the root password:
-
-```Bash
-sudo passwd
-```
-
-19. Reboot
-
-```Bash
-sudo reboot
-```
-
-20. Done. Enjoy
+My minimal dotfiles are available [here](https://github.com/daimaou92/dotfiles).
