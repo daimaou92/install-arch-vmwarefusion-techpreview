@@ -19,8 +19,20 @@ scriptDir() {
 SD=`scriptDir`
 
 VER="${1:-}"
-[ -z "$VER" ] && VER="5.16.11"
-VP="v$(echo "$VER" | cut -d'.' -f1).x"
+[ -z "$VER" ] && VER="5.16.13"
+MAV="$(echo $VER | cut -d'.' -f1)"
+[ -z "$MAV" ] && exit 1
+VP="v${MAV}.x"
+MIV="$(echo $VER | cut -d'.' -f2)"
+[ -z "$MIV" ] && exit 1
+PAV="$(echo $VER | cut -d'.' -f3)"
+[ -z $PAV ] && PAV="0"
+UVER="$VER"
+if [ "$PAV" == "0" ]; then
+	UVER="${MAV}.${MIV}"
+fi
+VER="${MAV}.${MIV}.${PAV}"
+echo "Version: ${VER}"
 
 CUR=`pwd`
 P="$HOME/.kernbuild"
@@ -29,22 +41,22 @@ P="$HOME/.kernbuild"
 mkdir -p "$P" && cd "$P"
 
 wget --no-dns-cache --no-check-certificate --debug \
-	"https://cdn.kernel.org/pub/linux/kernel/${VP}/linux-${VER}.tar.xz"
+	"https://cdn.kernel.org/pub/linux/kernel/${VP}/linux-${UVER}.tar.xz"
 wget --no-dns-cache --no-check-certificate --debug \
-	"https://cdn.kernel.org/pub/linux/kernel/${VP}/linux-${VER}.tar.sign"
+	"https://cdn.kernel.org/pub/linux/kernel/${VP}/linux-${UVER}.tar.sign"
 
-FP=`gpg --list-packets linux-${VER}.tar.sign | grep keyid | awk '{print $6}'`
+FP=`gpg --list-packets linux-${UVER}.tar.sign | grep keyid | awk '{print $6}'`
 gpg --recv-keys $FP
 
-unxz "linux-${VER}.tar.xz"
-GS=`gpg --verify "linux-${VER}.tar.sign" "linux-${VER}.tar" 2>&1 | grep "Good signature"`
+unxz "linux-${UVER}.tar.xz"
+GS=`gpg --verify "linux-${UVER}.tar.sign" "linux-${UVER}.tar" 2>&1 | grep "Good signature"`
 [ -z $GS ] && exit 1
 
 echo "Signature verified"
-tar -xvf "linux-${VER}.tar"
-chown -R $(whoami):$(whoami) "linux-${VER}"
+tar -xvf "linux-${UVER}.tar"
+chown -R $(whoami):$(whoami) "linux-${UVER}"
 
-cd "linux-${VER}"
+cd "linux-${UVER}"
 make mrproper
 
 zcat /proc/config.gz > .config

@@ -1,3 +1,21 @@
+# PSA
+
+There is an ongoing issue with kernel versions released since March 2022
+not booting in Fusion for M1 Tech Preview. Here are some discussions:
+
+1. [Linux 5.17 EFI-stub does not boot, hangs at loading kernel](https://communities.vmware.com/t5/Fusion-for-Apple-Silicon-Tech/Linux-5-17-EFI-stub-does-not-boot-hangs-at-loading-kernel/td-p/2900884)
+2. [Failure to boot Linux Kernel 5.15.31, works with 5.15.26](https://communities.vmware.com/t5/Fusion-for-Apple-Silicon-Tech/Failure-to-boot-Linux-Kernel-5-15-31-works-with-5-15-26/td-p/2901884)
+3. [Stuck trying to boot](https://github.com/mitchellh/nixos-config/issues/22)
+
+The lastest kernel version I've been able to compile and boot successfully is
+`5.16.13`. Please stick to that for now.
+
+As a consequence, for the time being, people will not be able to do fresh
+installs using this. Basically a particular version of `linux` is needed during
+Arch's installation. I will work on it when I have the time. PRs are welcome
+
+---
+
 # What it is
 
 A semi-automated way of setting up ArchLinux in [VMware Fusion Public Tech Preview 21H1](https://customerconnect.vmware.com/downloads/get-download?downloadGroup=FUS-PUBTP-2021H1)
