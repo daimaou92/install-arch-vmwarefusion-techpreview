@@ -5,7 +5,7 @@ ARCHHOSTNAME ?= archmachine
 ARCHREGION ?= Asia
 ARCHCITY ?= Kolkata
 
-SWAPSZG ?= 8
+SWAPSZG ?= 4
 ESPSZM ?= 512
 
 # typically sda for SATA
@@ -20,17 +20,19 @@ MAKEFILEDIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 SSHOPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
-
 vm/install:
 	scp $(SSHOPTIONS) -p$(APORT) -r $(MAKEFILEDIR)/before \
 		root@$(ADDR):/tmp/
 	ssh $(SSHOPTIONS) -p$(APORT) -t root@$(ADDR) " \
+		cd; \
+		pacman-key --init; \
+		pacman-key --populate archlinuxarm; \
 		timedatectl set-ntp true; \
 		parted /dev/$(ABLOCKDEVICE) -- mklabel gpt; \
 		parted /dev/$(ABLOCKDEVICE) -- mkpart primary $(ESPSZM)MiB -$(SWAPSZG)GiB; \
-		parted /dev/$(ABLOCKDEVICE) -- mkpart primary linux-swap -$(SWAPSZG)GiB 100\%; \
+		parted /dev/$(ABLOCKDEVICE) -- mkpart primary linux-swap -$(SWAPSZG)GiB 100%; \
 		parted /dev/$(ABLOCKDEVICE) -- mkpart ESP fat32 1MiB $(ESPSZM)MiB; \
-		parted /dev/$(ABLOCKDEVICE) -- set 3 esp on; \
+		parted /dev/$(ABLOCKDEVICE) -- set 3 ESP on; \
 		mkfs.ext4 -L arch /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)1; \
 		mkswap -L swap /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)2; \
 		mkfs.fat -F 32 -n boot /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)3; \
@@ -39,7 +41,7 @@ vm/install:
 		mount /dev/disk/by-label/boot /mnt/boot; \
 		swapon /dev/disk/by-label/swap; \
 		cp /tmp/before/mirrors/$(MIRRORLIST) /etc/pacman.d/mirrorlist; \
-		pacstrap /mnt base base-devel linux linux-firmware; \
+		pacstrap /mnt base base-devel linux linux-firmware efibootmgr; \
 		pacstrap /mnt neovim zsh git wget curl sudo openssh; \
 		pacstrap /mnt networkmanager; \
 		genfstab -U /mnt >> /mnt/etc/fstab; \

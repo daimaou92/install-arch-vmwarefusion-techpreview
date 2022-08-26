@@ -51,6 +51,7 @@ sudo systemctl enable vmtoolsd.service
 sudo systemctl enable vmware-vmblock-fuse.service
 
 sudo pacman -R chrpath doxygen rpcsvc-proto cunit --noconfirm
+echo "vmhgfs-fuse /mnt/hgfs  fuse defaults,allow_other   0   0" | sudo tee -a /etc/fstab
 
 cd $CUR
 rm -rf $P/open-vm-tools

@@ -19,7 +19,7 @@ scriptDir() {
 SD=`scriptDir`
 
 VER="${1:-}"
-[ -z "$VER" ] && VER="5.16.13"
+[ -z "$VER" ] && VER="5.19.4"
 MAV="$(echo $VER | cut -d'.' -f1)"
 [ -z "$MAV" ] && exit 1
 VP="v${MAV}.x"

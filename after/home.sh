@@ -25,7 +25,7 @@ mkdir -p $HOME/.config
 mkdir -p $HOME/.config/zsh
 
 
-cd $HOME/code/personal
+cd $HOME/code
 git clone https://github.com/daimaou92/dotfiles
 cd dotfiles
 ./zshconf.sh
