@@ -98,11 +98,11 @@ Takes about 20 minutes with 4 cores given to the VM in my M1 Pro 14". It
 installs the latest kernel version (5.19.9 at the time of this update) by default.
 You could change this and pin it to a fixed kernel inside `after/kernelvmwgfx/build.sh`.
 
-13. This step also downloads the latest commit from open-vm-tools, builds for aarch64
+14. This step also downloads the latest commit from open-vm-tools, builds for aarch64
 and installs it. So shared clipboard directories should start working as soon as
 you install your DE or setup your WM. Your system gets restarted at the end of this.
 
-14. After logging in verify the service status of the following:
+15. After logging in verify the service status of the following:
 
 ```Bash
 sudo systemctl status vmtoolsd.service
@@ -119,7 +119,7 @@ ls /etc/xdg/autostart/vmware-user.desktop
 
 This needs to be autostarted and is required for clipboard functionality.
 
-15. Change the user password:
+16. Change the user password:
 
 ```Bash
 passwd
@@ -131,7 +131,7 @@ and the root password:
 sudo passwd
 ```
 
-16. If everything has gone as per documentation so far - you can stop reading
+17. If everything has gone as per documentation so far - you can stop reading
     further and set up your home environment the way you prefer.
 
 ### Quick setup with i3, alacritty and xorg (optional):
