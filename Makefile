@@ -5,7 +5,7 @@ ARCHHOSTNAME ?= archmachine
 ARCHREGION ?= Asia
 ARCHCITY ?= Kolkata
 
-SWAPSZG ?= 4
+SWAPSZG ?= 2
 ESPSZM ?= 512
 
 # typically sda for SATA
@@ -35,11 +35,11 @@ vm/install:
 		parted /dev/$(ABLOCKDEVICE) -- set 3 ESP on; \
 		mkfs.ext4 -L arch /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)1; \
 		mkswap -L swap /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)2; \
-		mkfs.fat -F 32 -n boot /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)3; \
-		mount /dev/disk/by-label/arch /mnt; \
+		mkfs.fat -F 32 -n BOOT /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)3; \
+		mount /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)1 /mnt; \
 		mkdir -p /mnt/boot; \
-		mount /dev/disk/by-label/boot /mnt/boot; \
-		swapon /dev/disk/by-label/swap; \
+		mount /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)3 /mnt/boot; \
+		swapon /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)2; \
 		cp /tmp/before/mirrors/$(MIRRORLIST) /etc/pacman.d/mirrorlist; \
 		pacstrap /mnt base base-devel linux linux-firmware efibootmgr; \
 		pacstrap /mnt neovim zsh git wget curl sudo openssh; \
@@ -85,6 +85,12 @@ vm/openvmtools:
 		sudo reboot; \
 	"
 
+vm/after:
+	scp $(SSHOPTIONS) -p$(APORT) -r $(MAKEFILEDIR)/after \
+		$(ARCHUSER)@$(ADDR):/tmp/
+	ssh $(SSHOPTIONS) -p$(APORT) -t $(ARCHUSER)@$(ADDR) " \
+		/bin/bash /tmp/after/after.sh; \
+	"
 # This will
 # Build and install kernel 5.16.10 with vmwgfx
 # Build and install open-vm-tools

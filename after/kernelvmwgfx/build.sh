@@ -19,7 +19,13 @@ scriptDir() {
 SD=`scriptDir`
 
 VER="${1:-}"
-[ -z "$VER" ] && VER="5.19.4"
+if [ -z "$VER" ]; then
+	VER=`curl -sL "https://cdn.kernel.org/pub/linux/kernel/v5.x" | \
+		grep -E "<a href=\"linux-.*\.tar\.xz" | \
+		sed -e 's/<a href=".*">//g' -e 's/<\/a>//g' | \
+		awk '{print $1}' | sed -e 's/linux-//g' -e 's/\.tar\.xz//g' | \
+		sort --version-sort | tail -n1`
+fi
 MAV="$(echo $VER | cut -d'.' -f1)"
 [ -z "$MAV" ] && exit 1
 VP="v${MAV}.x"
