@@ -49,8 +49,6 @@ This will, of course, set the password to `root`.
 ip addr
 ```
 
-My VM ip is typically: `172.16.210.140`
-
 7. Now open a terminal window in you `Mac host` and clone this repo
 8. `cd` into the repo directory
 9. Run:
@@ -58,6 +56,7 @@ My VM ip is typically: `172.16.210.140`
 ```Bash
 ADDR="<ip address from step 5>" \
 ARCHUSER="preferred username (default:daimaou92)" \
+ARCHHOSTNAME="preferred machine name (default:archmachine)" \
 make vm/install
 ```
 
@@ -113,7 +112,7 @@ Check if the file `/etc/xdg/autostart/vmware-user.desktop` exists:
 ls /etc/xdg/autostart/vmware-user.desktop
 ```
 
-This needs to be autostarted and is required for clipboard functionality.
+This needs to be autostarted at login and is required for clipboard sharing and shared folder mounting.
 
 16. Change the user password:
 
