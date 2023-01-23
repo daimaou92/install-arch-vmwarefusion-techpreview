@@ -1,13 +1,9 @@
 # Updates
-1. There's a new public Tech preview -
-[22H2](https://customerconnect.vmware.com/downloads/get-download?downloadGroup=FUS-PUBTP-22H2)
-with 3D Graphics 🚀🚀🚀
+1. [VMWare Fusion 13](https://www.vmware.com/in/products/fusion/fusion-evaluation.html) is out 🚀🚀🚀
 2. The scripts - henceforth - will be tested with the official archboot releases for
 aarch64 only. As of the time of editing this file the version tested is:
-[archboot-archlinuxarm-2022.09.12-11.41-aarch64.iso](archboot-archlinuxarm-2022.09.12-11.41-aarch64.iso).
-All my testing is done with the ~350MiB file since it's a nice balance. It boots much
-faster into a live env compared to the ~130MiB file and is much smaller over the wire
-compared to the ~1.2GiB one.
+[archboot-2023.01.22-21.50-aarch64.iso](https://pkgbuild.com/~tpowa/archboot/iso/aarch64/latest/archboot-2023.01.22-21.50-aarch64.iso).
+I have not tested this set of scripts with the `-latest` or the `-local` flavours.
 
 # What it is
 

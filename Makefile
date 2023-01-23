@@ -91,14 +91,3 @@ vm/after:
 	ssh $(SSHOPTIONS) -p$(APORT) -t $(ARCHUSER)@$(ADDR) " \
 		/bin/bash /tmp/after/after.sh; \
 	"
-# This will
-# Build and install kernel 5.16.10 with vmwgfx
-# Build and install open-vm-tools
-# Configure my personal home setup
-# DONOT use this directly unless you do want the things they install
-vm/home:
-	scp $(SSHOPTIONS) -p$(APORT) -r $(MAKEFILEDIR)/after \
-		$(ARCHUSER)@$(ADDR):/tmp/
-	ssh $(SSHOPTIONS) -p$(APORT) -t $(ARCHUSER)@$(ADDR) " \
-		/bin/bash /tmp/after/home.sh; \
-	"
