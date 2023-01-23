@@ -1,5 +1,5 @@
 # Updates
-1. [VMWare Fusion 13](https://www.vmware.com/in/products/fusion/fusion-evaluation.html) is out 🚀🚀🚀
+1. [VMWare Fusion 13](https://www.vmware.com/in/products/fusion.html) is out 🚀🚀🚀
 2. The scripts - henceforth - will be tested with the official archboot releases for
 aarch64 only. As of the time of editing this file the version tested is:
 [archboot-2023.01.22-21.50-aarch64.iso](https://pkgbuild.com/~tpowa/archboot/iso/aarch64/latest/archboot-2023.01.22-21.50-aarch64.iso).
@@ -7,7 +7,7 @@ I have not tested this set of scripts with the `-latest` or the `-local` flavour
 
 # What it is
 
-A semi-automated way of setting up ArchLinux in [VMware Fusion Public Tech Preview 21H1](https://customerconnect.vmware.com/downloads/get-download?downloadGroup=FUS-PUBTP-2021H1)
+A semi-automated way of setting up ArchLinux in [VMware Fusion for Apple Silicon](https://www.vmware.com/in/products/fusion.html)
 
 # Steps
 
