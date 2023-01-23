@@ -43,7 +43,6 @@ vm/install:
 		cp /tmp/before/mirrors/$(MIRRORLIST) /etc/pacman.d/mirrorlist; \
 		pacstrap /mnt base base-devel linux linux-firmware efibootmgr; \
 		pacstrap /mnt neovim zsh git wget curl sudo openssh; \
-		pacstrap /mnt networkmanager; \
 		genfstab -U /mnt >> /mnt/etc/fstab; \
 		cp /tmp/before/fuse.conf /mnt/etc/fuse.conf; \
 		cp /tmp/before/mirrors/$(MIRRORLIST) /mnt/etc/pacman.d/mirrorlist; \
@@ -53,7 +52,7 @@ vm/install:
 		arch-chroot /mnt sh -c 'locale-gen'; \
 		arch-chroot /mnt sh -c 'echo \"LANG=en_US.UTF-8\" > /etc/locale.conf'; \
 		arch-chroot /mnt sh -c 'echo \"$(ARCHHOSTNAME)\" > /etc/hostname'; \
-		arch-chroot /mnt sh -c 'systemctl enable NetworkManager.service'; \
+		arch-chroot /mnt sh -c 'systemctl enable systemd-networkd.service'; \
 		arch-chroot /mnt sh -c 'systemctl enable sshd.service'; \
 		arch-chroot /mnt sh -c 'useradd -m -G wheel -s /bin/zsh $(ARCHUSER)'; \
 		arch-chroot /mnt sh -c 'echo -e \"root\nroot\" | passwd $(ARCHUSER)'; \

@@ -20,7 +20,7 @@ SD=`scriptDir`
 
 VER="${1:-}"
 if [ -z "$VER" ]; then
-	VER=`curl -sL "https://cdn.kernel.org/pub/linux/kernel/v5.x" | \
+	VER=`curl -sL "https://cdn.kernel.org/pub/linux/kernel/v6.x" | \
 		grep -E "<a href=\"linux-.*\.tar\.xz" | \
 		sed -e 's/<a href=".*">//g' -e 's/<\/a>//g' | \
 		awk '{print $1}' | sed -e 's/linux-//g' -e 's/\.tar\.xz//g' | \

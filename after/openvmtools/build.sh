@@ -24,7 +24,12 @@ sudo pacman -Sy fuse2 icu iproute2 libdnet libmspack libsigc++ \
 		 python rpcsvc-proto netctl networkmanager cunit \
 		 --noconfirm
 
-git clone https://github.com/vmware/open-vm-tools.git
+VER="${1:-}"
+VMURL="https://github.com/vmware/open-vm-tools.git"
+if [ ! -z $VER ]; then
+	VMURL="https://github.com/vmware/open-vm-tools.git --branch=$VER"
+fi
+git clone $VMURL
 cd open-vm-tools/open-vm-tools
 autoreconf -i
 ./configure \
