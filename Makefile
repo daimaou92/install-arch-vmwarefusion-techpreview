@@ -67,15 +67,6 @@ vm/install:
 		reboot; \
 	"
 
-vm/vmwgfx:
-	scp $(SSHOPTIONS) -p$(APORT) \
-		-r $(MAKEFILEDIR)/after/kernelvmwgfx \
-		$(ARCHUSER)@$(ADDR):/tmp/
-	ssh $(SSHOPTIONS) -p$(APORT) -t $(ARCHUSER)@$(ADDR) " \
-		/bin/bash /tmp/kernelvmwgfx/build.sh; \
-		sudo reboot; \
-	"
-
 vm/openvmtools:
 	scp $(SSHOPTIONS) -p$(APORT) \
 		-r $(MAKEFILEDIR)/after/openvmtools \
@@ -83,11 +74,4 @@ vm/openvmtools:
 	ssh $(SSHOPTIONS) -p$(APORT) -t $(ARCHUSER)@$(ADDR) " \
 		/bin/bash /tmp/openvmtools/build.sh; \
 		sudo reboot; \
-	"
-
-vm/after:
-	scp $(SSHOPTIONS) -p$(APORT) -r $(MAKEFILEDIR)/after \
-		$(ARCHUSER)@$(ADDR):/tmp/
-	ssh $(SSHOPTIONS) -p$(APORT) -t $(ARCHUSER)@$(ADDR) " \
-		/bin/bash /tmp/after/after.sh; \
 	"
