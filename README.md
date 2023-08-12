@@ -139,8 +139,8 @@ I don't install and enable this service as part of the OS Install script since
 VMWare synchronizes time with the VM and I have faced issues with booting
 the VM on enabling this during OS install. 
 
-You can disable this by going to your VM Settings and clicking on `Advanced`
-- the very last option. In there just uncheck the `Synchronize Time` option.
+You can disable this by going to your VM Settings and clicking on `Advanced` -
+the very last option. In there just uncheck the `Synchronize Time` option.
 
 ```shell
 echo 'Xft.dpi: 220' | tee -a ~/.Xresources > /dev/null
