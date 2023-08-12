@@ -31,7 +31,7 @@ A semi-automated way of setting up ArchLinux in [VMware Fusion for Apple Silicon
 
 4. Set a root password in the VM:
 
-```Bash
+```shell
    echo -e "root\nroot" | passwd
 ```
 
@@ -39,7 +39,7 @@ This will, of course, set the password to `root`.
 
 5. Get the ip address of the VM:
 
-```Bash
+```shell
 ip addr
 ```
 
@@ -47,7 +47,7 @@ ip addr
 7. `cd` into the repo directory
 8. Run:
 
-```Bash
+```shell
 ADDR="<ip address from step 5>" \
 ARCHUSER="preferred username (default:daimaou92)" \
 ARCHHOSTNAME="preferred machine name (default:archmachine)" \
@@ -58,7 +58,7 @@ All configurable options are right on top of the `Makefile`. Configure as needed
 
 **If you are using SATA as the Bus type for `Hard Disk` make sure to add**
 
-```Bash
+```shell
 ABLOCKDEVICE="sda" PARTITIONPREFIX=""
 ```
 
@@ -76,7 +76,7 @@ doesn't have open-vm-tools yet so we'll have to build it ourselves.
 
 12. From the terminal in you **Mac Host** - and inside this repo directory run:
 
-```Bash
+```shell
 ADDR="<ip address from step 11>" \
 ARCHUSER="preferred username (default:daimaou92)" \
 make vm/openvmtools
@@ -88,13 +88,13 @@ you install your DE or setup your WM. Your system will be restarted at the end o
 
 13. After logging in verify the service status of the following:
 
-```Bash
+```shell
 sudo systemctl status vmtoolsd.service
 sudo systemctl status vmware-vmblock-fuse.service
 ```
 
 Check `/mnt/hgfs` to see if the directory you've shared exists.
-```bash
+```shell
 ls -la /mnt/hgfs
 ```
 
@@ -102,7 +102,7 @@ There should be no errors.
 
 Check if the file `/etc/xdg/autostart/vmware-user.desktop` exists:
 
-```Bash
+```shell
 ls /etc/xdg/autostart/vmware-user.desktop
 ```
 
@@ -110,13 +110,13 @@ This needs to be autostarted at login and is required for clipboard sharing.
 
 14. Change the user password:
 
-```Bash
+```shell
 passwd
 ```
 
 and the root password:
 
-```Bash
+```shell
 sudo passwd
 ```
 
@@ -125,50 +125,28 @@ sudo passwd
 
 ### Quick setup with i3, alacritty and xorg (optional):
 
-```Bash
-sudo pacman -Sy xorg xorg-xinit i3-gaps i3status i3lock dmenu dex \
-	alacritty dex
+```shell
+sudo pacman -Sy xorg xorg-xinit i3-gaps i3status i3lock dmenu alacritty dex xss-lock
 ```
 
-Use `~/.profile` instead of `~/.zprofile` for bash.
+You'll need to start the `x server` at login followed by `i3` and handle DPI.
+We'll do it with `~/.Xresources`, `~/.xinitrc` and `~/.zprofile`.
 
-You'll need to start the x server at login followed by i3.
-We'll do it with a `~/.xinitrc` and `~/.zprofile`. Again replace with
-`~/.profile` for bash
-
-```Bash
-echo 'exec i3' | tee ~/.xinitrc > /dev/null
+```shell
+echo 'Xft.dpi: 220' | tee -a ~/.Xresources > /dev/null
+echo 'xrdb -merge ~/.Xresources' | tee -a ~/.xinitrc > /dev/null
+echo 'exec i3' | tee -a ~/.xinitrc > /dev/null
 echo 'startx' | tee -a ~/.zprofile > /dev/null
 ```
 
-And reboot
-
-```Bash
-sudo reboot
-```
+Now kill the shell with `Ctrl+d` and relogin.
 
 On logging in for the first time after installing i3 you'll be asked if the
 `~/.config/i3/config` file should be created. Press `Enter` for `Yes`.
 Another screen pops up asking your choice of modifier key
-(called `$mod` henceforth). Choose `cmd` or `alt` per preference using
+(called `$mod` henceforth). Choose `Cmd` or `Alt` per preference using
 arrow keys and hit `Enter`.
 
-Hit `$mod+Enter`. This should open up `alacritty`.
-
-Let's set a usable DPI - specially if you're on a smaller screen. I set mine
-using `~/.Xresources`
-
-```Bash
-echo "Xft.dpi: 220" >> ~/.Xresources
-sed -i \
-	's@exec i3.*@xrdb -merge ~/.Xresources\
-exec i3@' ~/.xinitrc
-```
-
-Now exit i3 - `<mod> + Shift + e`
-
-Kill the shell - `Ctrl + d`
-
-And relogin
+Hit `$mod+Enter`. This should open up `Alacritty`.
 
 ## Done. Enjoy
