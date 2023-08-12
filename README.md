@@ -92,6 +92,11 @@ sudo systemctl status vmtoolsd.service
 sudo systemctl status vmware-vmblock-fuse.service
 ```
 
+Check `/mnt/hgfs` to see if the directory you've shared exists.
+```bash
+ls -la /mnt/hgfs
+```
+
 There should be no errors.
 
 Check if the file `/etc/xdg/autostart/vmware-user.desktop` exists:
@@ -122,16 +127,6 @@ sudo passwd
 ```Bash
 sudo pacman -Sy xorg xorg-xinit i3-gaps i3status i3lock dmenu dex \
 	alacritty dex
-```
-
-You'll need to mount the shared directories at this point. I typically
-create `$HOME/shares` and set the mounting command in my `.zprofile`
-(since i use zsh):
-
-```Bash
-mkdir -p $HOME/shares
-echo 'vmhgfs-fuse .host:/ "$HOME/shares" -o subtype=vmhgfs-fuse,allow_other' | \
-tee -a ~/.zprofile > /dev/null
 ```
 
 Use `~/.profile` instead of `~/.zprofile` for bash.
