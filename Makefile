@@ -1,6 +1,7 @@
 ADDR ?= unset
 APORT ?= 22
 ARCHUSER ?= daimaou92
+ARCHUSERPASS ?= root
 ARCHHOSTNAME ?= archmachine
 ARCHREGION ?= Asia
 ARCHCITY ?= Kolkata
@@ -51,18 +52,18 @@ vm/install:
 		arch-chroot /mnt sh -c 'locale-gen'; \
 		arch-chroot /mnt sh -c 'echo \"LANG=en_US.UTF-8\" > /etc/locale.conf'; \
 		arch-chroot /mnt sh -c 'echo \"$(ARCHHOSTNAME)\" > /etc/hostname'; \
-		arch-chroot /mnt sh -c 'systemctl enable systemd-networkd.service'; \
-		arch-chroot /mnt sh -c 'systemctl enable systemd-resolved.service'; \
 		arch-chroot /mnt sh -c 'bash /netmake.sh && rm /netmake.sh'; \
-		arch-chroot /mnt sh -c 'systemctl enable sshd.service'; \
 		arch-chroot /mnt sh -c 'useradd -m -G wheel -s /bin/zsh $(ARCHUSER)'; \
-		arch-chroot /mnt sh -c 'echo -e \"root\nroot\" | passwd $(ARCHUSER)'; \
+		arch-chroot /mnt sh -c 'echo -e \"$(ARCHUSERPASS)\n$(ARCHUSERPASS)\" | passwd $(ARCHUSER)'; \
 		arch-chroot /mnt sh -c 'echo -e \"$(ARCHUSER) ALL=(ALL) NOPASSWD: ALL\" > /etc/sudoers.d/100-$(ARCHUSER)'; \
 		arch-chroot /mnt sh -c 'mkinitcpio -P'; \
 		arch-chroot /mnt sh -c 'echo -e \"root\nroot\" | passwd'; \
 		arch-chroot /mnt sh -c 'bootctl install'; \
 		mkdir -p /mnt/boot/loader; \
 		cp -r /tmp/before/systemdbootloaders/* /mnt/boot/loader/; \
+		systemctl enable systemd-networkd.service --root=/mnt; \
+		systemctl enable systemd-resolved.service --root=/mnt; \
+		systemctl enable sshd.service --root=/mnt; \
 		umount -R /mnt; \
 		reboot; \
 	"
