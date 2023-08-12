@@ -51,6 +51,7 @@ ip addr
 ADDR="<ip address from step 5>" \
 ARCHUSER="preferred username (default:daimaou92)" \
 ARCHHOSTNAME="preferred machine name (default:archmachine)" \
+ARCHTZ="preferred timezone (default:Asia/Kolkata)" \
 make vm/install
 ```
 
@@ -123,29 +124,51 @@ sudo passwd
 15. If everything has gone as per documentation so far - you can stop reading
     further and set up your home environment the way you prefer.
 
-### Quick setup with i3, alacritty and xorg (optional):
+### Quick setup with i3, Alacritty, Xorg and NTP (optional):
 
 ```shell
-sudo pacman -Sy xorg xorg-xinit i3-gaps i3status i3lock dmenu alacritty dex xss-lock
+sudo pacman -Sy xorg xorg-xinit i3-gaps i3status i3lock dmenu alacritty dex xss-lock ntp
 ```
 
 You'll need to start the `x server` at login followed by `i3` and handle DPI.
 We'll do it with `~/.Xresources`, `~/.xinitrc` and `~/.zprofile`.
+
+And lastly we have to enable `ntpd.service` so that it can keep our time in sync.
+
+I don't install and enable this service as part of the OS Install script since
+VMWare synchronizes time with the VM and I have faced issues with booting
+the VM on enabling this during OS install. 
+
+You can disable this by going to your VM Settings and clicking on `Advanced`
+- the very last option. In there just uncheck the `Synchronize Time` option.
 
 ```shell
 echo 'Xft.dpi: 220' | tee -a ~/.Xresources > /dev/null
 echo 'xrdb -merge ~/.Xresources' | tee -a ~/.xinitrc > /dev/null
 echo 'exec i3' | tee -a ~/.xinitrc > /dev/null
 echo 'startx' | tee -a ~/.zprofile > /dev/null
+sudo systemctl enable ntpd.service
 ```
 
-Now kill the shell with `Ctrl+d` and relogin.
+Now reboot
+
+```
+sudo reboot
+```
 
 On logging in for the first time after installing i3 you'll be asked if the
 `~/.config/i3/config` file should be created. Press `Enter` for `Yes`.
 Another screen pops up asking your choice of modifier key
 (called `$mod` henceforth). Choose `Cmd` or `Alt` per preference using
 arrow keys and hit `Enter`.
+
+The time may not look quite right with your configured timezone after this first boot.
+Don't panic - verify the `ntpd.service` status with
+```shell
+sudo systemctl status ntpd
+```
+If the status is `active(running)` just let the system run for a bit.
+`ntp` takes some time to correct any skew it discovers.
 
 Hit `$mod+Enter`. This should open up `Alacritty`.
 

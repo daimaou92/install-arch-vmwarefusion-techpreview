@@ -3,8 +3,7 @@ APORT ?= 22
 ARCHUSER ?= daimaou92
 ARCHUSERPASS ?= root
 ARCHHOSTNAME ?= archmachine
-ARCHREGION ?= Asia
-ARCHCITY ?= Kolkata
+ARCHTZ ?= "Asia/Kolkata"
 
 SWAPSZG ?= 2
 ESPSZM ?= 512
@@ -42,11 +41,11 @@ vm/install:
 		mount /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)3 /mnt/boot; \
 		swapon /dev/$(ABLOCKDEVICE)$(PARTITIONPREFIX)2; \
 		pacstrap /mnt base base-devel linux linux-firmware efibootmgr; \
-		pacstrap /mnt neovim zsh git wget curl sudo openssh; \
+		pacstrap /mnt neovim zsh git wget curl sudo openssh ntp; \
 		genfstab -U /mnt >> /mnt/etc/fstab; \
 		cp /tmp/before/fuse.conf /mnt/etc/fuse.conf; \
 		cp /tmp/before/netmake.sh /mnt/netmake.sh; \
-		arch-chroot /mnt sh -c 'ln -sf /usr/share/zoneinfo/$(ARCHREGION)/$(ARCHCITY) /etc/localtime'; \
+		arch-chroot /mnt sh -c 'ln -sf /usr/share/zoneinfo/$(ARCHTZ) /etc/localtime'; \
 		arch-chroot /mnt sh -c 'hwclock --systohc'; \
 		arch-chroot /mnt sh -c 'sed -e \"/en_US.UTF-8/s/^#*//g\" -i /etc/locale.gen'; \
 		arch-chroot /mnt sh -c 'locale-gen'; \
