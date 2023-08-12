@@ -55,6 +55,7 @@ make vm/install
 ```
 
 All configurable options are right on top of the `Makefile`. Configure as needed.
+
 **If you are using SATA as the Bus type for `Hard Disk` make sure to add**
 
 ```Bash
