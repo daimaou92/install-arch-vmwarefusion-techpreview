@@ -43,7 +43,7 @@ This will, of course, set the password to `root`.
 ip addr
 ```
 
-6. Now open a terminal window in you `Mac host` and clone this repo
+6. Now open a terminal window in your `Mac host` and clone this repo
 7. `cd` into the repo directory
 8. Run:
 
@@ -100,7 +100,7 @@ Check if the file `/etc/xdg/autostart/vmware-user.desktop` exists:
 ls /etc/xdg/autostart/vmware-user.desktop
 ```
 
-This needs to be autostarted at login and is required for clipboard sharing and shared folder mounting.
+This needs to be autostarted at login and is required for clipboard sharing.
 
 14. Change the user password:
 
