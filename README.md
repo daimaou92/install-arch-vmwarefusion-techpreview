@@ -10,7 +10,8 @@ A semi-automated way of setting up ArchLinux in [VMware Fusion for Apple Silicon
 
 # Steps
 
-1. Acquire an ArchLinux ISO for aarch64. This can be done in a variety of ways. I download it from the [registry](https://pkgbuild.com/~tpowa/archboot/iso/aarch64/latest/) of the awesome [Archboot](https://gitlab.archlinux.org/tpowa/archboot) project since it has started creating `aarch64` ISOs recently. All tests have been done with the ~350MiB file - take that as you will. 
+1. Acquire an ArchLinux ISO for aarch64. This can be done in a variety of ways.
+This repo maintains one in it's [release page](https://github.com/daimaou92/install-arch-vmwarefusion-techpreview/releases).
 
 2. Setup a new "Custom Virtual Machine" in VMware.
 
